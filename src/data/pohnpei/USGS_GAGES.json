@@ -1,0 +1,80 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            158.20320388711443,
+            6.921143600925642
+          ]
+        },
+        "properties": {
+          "Id": 0,
+          "gage_name": "Nanpil River",
+          "gage_num": "16897600"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            158.20843239997393,
+            6.927709818295209
+          ]
+        },
+        "properties": {
+          "Id": 0,
+          "gage_name": "Lewi River",
+          "gage_num": "16897900"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            158.15528507348813,
+            6.904504751791976
+          ]
+        },
+        "properties": {
+          "Id": 0,
+          "gage_name": "Luhpwor River",
+          "gage_num": "16898600"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            158.18664603211892,
+            6.845271635739279
+          ]
+        },
+        "properties": {
+          "Id": 0,
+          "gage_name": "Lehn Mesi River",
+          "gage_num": "16898690\r\n"
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            158.21438532545613,
+            6.953082824148554
+          ]
+        },
+        "properties": {
+          "Id": 0,
+          "gage_name": "Lewi River Mouth",
+          "gage_num": "16898200\r\n"
+        }
+      }
+    ]
+  }

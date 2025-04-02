@@ -1,0 +1,143 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            162.9888888888904,
+            5.362499999999983
+          ]
+        },
+        "properties": {
+          "GAGE": "mitunte",
+          "F2": 5,
+          "F3": 21,
+          "F4": 45,
+          "LATITUDE": 5.3625,
+          "F6": 162,
+          "F7": 59,
+          "F8": 20,
+          "LONGITUTDE": 162.988889,
+          "F10": 0,
+          "GAGE_NUM": 16899500
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            162.9719444444461,
+            5.33638888888887
+          ]
+        },
+        "properties": {
+          "GAGE": "OKAT",
+          "F2": 5,
+          "F3": 20,
+          "F4": 11,
+          "LATITUDE": 5.336389,
+          "F6": 162,
+          "F7": 58,
+          "F8": 19,
+          "LONGITUTDE": 162.971944,
+          "F10": 0,
+          "GAGE_NUM": 16899600
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            162.97583333333492,
+            5.341666666666648
+          ]
+        },
+        "properties": {
+          "GAGE": "MELO",
+          "F2": 5,
+          "F3": 20,
+          "F4": 30,
+          "LATITUDE": 5.341667,
+          "F6": 162,
+          "F7": 58,
+          "F8": 33,
+          "LONGITUTDE": 162.975833,
+          "F10": 0,
+          "GAGE_NUM": 16899620
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            162.98694444444598,
+            5.275833333333316
+          ]
+        },
+        "properties": {
+          "GAGE": "PALURSIK",
+          "F2": 5,
+          "F3": 16,
+          "F4": 33,
+          "LATITUDE": 5.275833,
+          "F6": 162,
+          "F7": 59,
+          "F8": 13,
+          "LONGITUTDE": 162.986944,
+          "F10": 0,
+          "GAGE_NUM": 16899700
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            163.01500000000138,
+            5.29305555555554
+          ]
+        },
+        "properties": {
+          "GAGE": "MALEM",
+          "F2": 5,
+          "F3": 17,
+          "F4": 35,
+          "LATITUDE": 5.293056,
+          "F6": 163,
+          "F7": 0,
+          "F8": 54,
+          "LONGITUTDE": 163.015,
+          "F10": 0,
+          "GAGE_NUM": 16899750
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            163.0066666666681,
+            5.319444444444427
+          ]
+        },
+        "properties": {
+          "GAGE": "TOFUL",
+          "F2": 5,
+          "F3": 19,
+          "F4": 10,
+          "LATITUDE": 5.319444,
+          "F6": 163,
+          "F7": 0,
+          "F8": 24,
+          "LONGITUTDE": 163.006667,
+          "F10": 0,
+          "GAGE_NUM": 16899800
+        }
+      }
+    ]
+  }
