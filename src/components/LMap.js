@@ -9,6 +9,7 @@ import { BaseLayers } from "./Baselayers.js";
 import { SidePanel } from "./SidePanel.js";
 import { MarkerPopup } from "./MarkerPopup.js";
 import { MultiplePlots } from "./Plot.js";
+import { Plot } from "./Plot_v2.js";
 import { completeSelection, additionalSelection, alreadySelected } from "./Toast.js";
 import { SelectionView, choices, choicesLayers, createCheckBox } from "./SelectionView.js";
 
@@ -66,8 +67,8 @@ const pointSelectBtn = L.easyButton({
 
 export function LMap(element) {
 
-    const center = [13.5435056,144.7478083];
-    const defaultZoom = 12;
+    const center = [6.17332365401505, 160.19439697265625]; // 6.85, 158.25
+    const defaultZoom = 8;
     const maxZoom = 19; 
 
     // creates Leaflet map 
@@ -77,10 +78,33 @@ export function LMap(element) {
         zoomControl: false,
     });
 
+    const FSM = {
+        Kosrae: { coords: [5.311475417249048, 162.97453880310061], zoom: 13 },
+        Pohnpei: { coords: [6.903591547547428, 158.21943283081058], zoom: 12 },
+    };
+
+    // const kosrae = L.marker(FSM.Kosrae.coords).addTo(map).bindPopup('<b>Kosrae, FSM</b>');
+    // const pohnpei = L.marker(FSM.Pohnpei.coords).addTo(map).bindPopup('<b>Pohnpei, FSM</b>');
+
+    const kosrae = L.marker(FSM.Kosrae.coords);
+    kosrae.addTo(map).bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' });
+    const pohnpei = L.marker(FSM.Pohnpei.coords);
+    pohnpei.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
+
     const baseLayers = BaseLayers(map, maxZoom);
 
     const layerControl = L.control.layers(baseLayers, null, { position: "bottomright" });
     layerControl.addTo(map);
+
+    const mapTitle = L.control({ position: 'topleft' });
+
+    mapTitle.onAdd = function(map) {
+        this._div = L.DomUtil.create('div', 'mapTitle'); 
+        this._div.innerHTML = '<img src="./src/assets/WERI MAppFx_Title Card_FSM FDC_v1.png" height="120">';
+        return this._div;
+    };
+
+    mapTitle.addTo(map);
 
     const zoomControl = L.control.zoom({
         // options: topleft, topright, bottomleft, bottomright
@@ -90,13 +114,52 @@ export function LMap(element) {
 
     const resetZoomBtn = L.easyButton('<img src="./src/assets/geo-fill.svg">', function() {
         map.setView(center, defaultZoom);
+        // map.flyTo(center, defaultZoom);
+
+        kosrae.addTo(map).bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' });
+
+        pohnpei.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
+        pohnpei.openTooltip();
     }, "Reset map view");
+
+    const kosraeViewBtn = L.easyButton('<span class="easy-button-text">K</span>', 
+        function() {
+            map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
+            // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
+            if (map.hasLayer(kosrae)) { 
+                map.removeLayer(kosrae);
+            } 
+        }, "Fly to Kosrae");
+
+    const pohnpeiViewBtn = L.easyButton('<span class="easy-button-text">P</span>', 
+        function() {
+            // map.setView(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
+            // map.panTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom)
+            map.flyTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
+            if (map.hasLayer(pohnpei)) { 
+                map.removeLayer(pohnpei);
+            } 
+        }, "Fly to Pohnpei");
 
     const controlBar = L.easyBar([
         resetZoomBtn,
+        kosraeViewBtn,
+        pohnpeiViewBtn,
     ], { position: "bottomright" });
 
     controlBar.addTo(map);
+
+    map.on('moveend', () => {
+        let view = map.getCenter();
+        let currentZoom = map.getZoom();
+        console.log(`Center = [${view.lat}, ${view.lng}]    |    Zoom Level = ${currentZoom}`);
+    });
+
+    map.on('zoomend', () => {
+        let view = map.getCenter();
+        let currentZoom = map.getZoom();
+        console.log(`Center = [${view.lat}, ${view.lng}]    |    Zoom Level = ${currentZoom}`);
+    })
 
     // draw control bar
     var drawnFeatures = new L.FeatureGroup();
@@ -277,6 +340,10 @@ export function LMap(element) {
             // initialize search 
             map.addControl(searchControl);
         });
+    
+    getGages(map, layerControl);
+    getRoads(map, layerControl);
+    getStreams(map, layerControl);
 
     // leaflet lasso configuration 
     map.on("lasso.finished", event => {
@@ -319,4 +386,113 @@ export function updateSelectionStates() {
             switch (input.className) { }
         }
     }
+}
+
+function getGages(map, layerControl) {
+    const path = './src/data/USGS_GAGES.json';
+    fetch(path)
+    .then(response => response.json())
+    .then(gages => {
+
+        const getInfo = (feature, layer) => {
+            layer.bindTooltip('USGS Stream Gage', { permanent: true, direction: 'bottom', offset: [0, 10], className: 'usgs-stream-gage-tooltip' });
+            layer.bindPopup(`<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.gage_name.charAt(0).toUpperCase()}${feature.properties.gage_name.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.gage_num}</span>`);
+        }
+
+        const data = L.geoJSON(gages, {
+            pointToLayer: function(feature, latlng) {
+                return L.circleMarker(latlng, {
+                    radius: 8,
+                    fillColor: '#ccff33',
+                    weight: 1,
+                    fillOpacity: 1.0,
+                    color: '#000',
+                    opacity: 1.0,
+                })
+            },
+            onEachFeature: getInfo,
+        }).addTo(map);
+
+        layerControl.addOverlay(data, "Gages");
+    });
+}
+
+function getRoads(map, layerControl) {
+    const path = './src/data/POHNPEI_RDS_UTM.json';
+    fetch(path)
+    .then(response => response.json())
+    .then(roads => {
+        const data = L.geoJSON(roads, {
+            style: function(feature) {
+                return {
+                    color: "#ff5733", // Line color
+                    weight: 3,        // Line thickness
+                    opacity: 0.8,     // Line opacity
+                    // dashArray: "5, 5" 
+                }
+            }
+        }).addTo(map);
+
+        layerControl.addOverlay(data, "Roads");
+    });
+}
+
+function getStreams(map, layerControl) {
+    const path = './src/data/STREAMS.json';
+    fetch(path)
+    .then(response => response.json())
+    .then(streams => {
+
+        const getInfo = (feature, layer) => {
+            layer.bindPopup(`
+            <div class="card text-center">
+                <div class="card-header">
+                    <h5>Stream ID: ${feature.properties.ARCID}</h5>
+                </div>
+                <div class="card-body">
+                    <p>${[0, 10, 30, 50, 80, 95, 'AVG'].map(ep => `Q${ep}: ${feature.properties[`Q${ep}`]}<br>`).join('')}</p>
+                </div>
+                <div class="card-footer text-body-secondary">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Plot FDC</button>
+                </div>
+            </div>
+            `);
+
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: a => Plot(a.target.feature.properties)
+                // click: a => plotData = a.target.feature.properties, // TODO - add click functionality to view popup on click and set plot 
+            });
+        }
+
+        streams = L.geoJSON(streams, { onEachFeature: getInfo }).addTo(map);
+        layerControl.addOverlay(streams, "Streams");
+    });
+}
+
+function highlightFeature(e) {
+    let layer = e.target;
+
+    layer.setStyle({
+        weight: 5,
+        color: 'white',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    };
+}
+
+function resetHighlight(e) {
+    let layer = e.target;
+
+    layer.setStyle({
+        weight: 4,
+        color: '#3386FA', // #0D6EFD
+        dashArray: '',
+        fillOpacity: 0.7
+    });
 }
