@@ -71,9 +71,32 @@
 }
 
 /* Hides tooltips on page load */
-.leaflet-tooltip {
+/* .leaflet-tooltip {
     visibility: hidden;
-  }
+  } */
+
+/* customized tooltup for ugum watershed */
+.leaflet-tooltip.fsm-island-tooltip {
+    font-weight: 600;
+    font-size: 12px;
+    background: #FEFAE0;
+    color: #4B3A07;
+    opacity: 40%;
+    border-radius: 30px;
+    border: transparent;
+    /* padding: 10px; */
+}
+
+.leaflet-tooltip-top.fsm-island-tooltip:before
+.leaflet-tooltip-bottom.fsm-island-tooltip:before
+.leaflet-tooltip-left.fsm-island-tooltip:before
+.leaflet-tooltip-right.fsm-island-tooltip:before {
+    position: absolute;
+    pointer-events: none;
+    border: 6px solid transparent;
+    background: transparent;
+    content: "";
+}
 
 .bs-btn-group {
     margin: 20px;
@@ -183,4 +206,16 @@
 
 .plot-btn-container {
     float: right;
+}
+
+.plot-modal-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.easy-button-text {
+    font-size: 16px;
+    font-weight: bold;
+    color: black;
 }
