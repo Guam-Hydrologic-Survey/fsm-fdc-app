@@ -14,7 +14,7 @@ import { completeSelection, additionalSelection, alreadySelected } from "./Toast
 import { SelectionView, choices, choicesLayers, createCheckBox } from "./SelectionView.js";
 
 // utils 
-import { geoJsonUrl } from "../utils/dataSource.js";
+import { geoJsonUrl, kosraeData, pohnpeiData } from "../utils/dataSource.js";
 import { createChoice } from "../utils/createChoice.js";
 
 let geoJsonData;
@@ -120,6 +120,7 @@ export function LMap(element) {
 
         pohnpei.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
         pohnpei.openTooltip();
+
     }, "Reset map view");
 
     const kosraeViewBtn = L.easyButton('<span class="easy-button-text">K</span>', 
@@ -129,6 +130,7 @@ export function LMap(element) {
             if (map.hasLayer(kosrae)) { 
                 map.removeLayer(kosrae);
             } 
+            kosraeMap(map, layerControl);
         }, "Fly to Kosrae");
 
     const pohnpeiViewBtn = L.easyButton('<span class="easy-button-text">P</span>', 
@@ -139,6 +141,7 @@ export function LMap(element) {
             if (map.hasLayer(pohnpei)) { 
                 map.removeLayer(pohnpei);
             } 
+            pohnpeiMap(map, layerControl);
         }, "Fly to Pohnpei");
 
     const controlBar = L.easyBar([
@@ -341,9 +344,9 @@ export function LMap(element) {
             map.addControl(searchControl);
         });
     
-    getGages(map, layerControl);
-    getRoads(map, layerControl);
-    getStreams(map, layerControl);
+    // getGages(map, layerControl);
+    // getRoads(map, layerControl);
+    // getStreams(map, layerControl);
 
     // leaflet lasso configuration 
     map.on("lasso.finished", event => {
@@ -388,8 +391,21 @@ export function updateSelectionStates() {
     }
 }
 
-function getGages(map, layerControl) {
-    const path = './src/data/USGS_GAGES.json';
+function pohnpeiMap(map, layerControl) { 
+    // TODO - hide json layers based on zoom level, add all streams, gages, roads to one layer group (resolve duplicates in layer control box), hide tooltips for usgs stream gage on map default view, fix plot, create toast component to show user which island they're on 
+    getGages(map, layerControl, pohnpeiData.gages);
+    getRoads(map, layerControl, pohnpeiData.roads);
+    getStreams(map, layerControl, pohnpeiData.streams);
+}
+
+function kosraeMap(map, layerControl) {
+    // TODO - hide json layers based on zoom level, change properties name so that they are the same (gage names/ids, etc.), fix plot 
+    getGages(map, layerControl, kosraeData.gages);
+    getStreams(map, layerControl, kosraeData.rivers);
+}
+
+function getGages(map, layerControl, path) {
+    // const path = './src/data/pohnpei/USGS_GAGES.json';
     fetch(path)
     .then(response => response.json())
     .then(gages => {
@@ -417,8 +433,8 @@ function getGages(map, layerControl) {
     });
 }
 
-function getRoads(map, layerControl) {
-    const path = './src/data/POHNPEI_RDS_UTM.json';
+function getRoads(map, layerControl, path) {
+    // const path = './src/data/pohnpei/POHNPEI_RDS_UTM.json';
     fetch(path)
     .then(response => response.json())
     .then(roads => {
@@ -437,8 +453,8 @@ function getRoads(map, layerControl) {
     });
 }
 
-function getStreams(map, layerControl) {
-    const path = './src/data/STREAMS.json';
+function getStreams(map, layerControl, path) {
+    // const path = './src/data/pohnpei/STREAMS.json';
     fetch(path)
     .then(response => response.json())
     .then(streams => {
