@@ -14,9 +14,16 @@ export function Plot(data) {
         name: 'Streamflow Duration Curve',
     };
 
+    // handle different property names for IDs
+    let streamId = "";
+
+    if (data.ARCID != null) {
+        streamId = data.ARCID; // use this for Pohnpei
+    } else { streamId = data.ID; } // use this for Kosrae 
+
     const layout = {
         title: {
-            text: `Stream ID: ${data.ARCID}`,
+            text: `Stream ID: ${streamId}`,
             font: {
                 size: 20,
             }
