@@ -11,6 +11,7 @@ import { Legend } from "./components/Legend.js";
 import { LMap } from "./components/LMap.js";
 // import { LargePlotModal } from "./components/Plot.js";
 import { Modal } from "./components/Modal.js";
+import { Toast } from "./components/Toast_v2.js";
 
 document.getElementById("app").innerHTML = /*html*/ 
 `
@@ -22,6 +23,7 @@ document.getElementById("app").innerHTML = /*html*/
     <div id="side-panel"></div>
     <div id="legend"></div>
     <div id="plot-modal"></div>
+    <div id="island-zoom-toast"></div>
     <div id="selection-view"></div>
 `
 
@@ -31,4 +33,5 @@ FullscreenModal(document.getElementById("multiple-plots"));
 Legend(document.getElementById("legend"));
 // LargePlotModal(document.getElementById("large-plot"));
 Modal(document.getElementById('plot-modal'));
+// Toast(document.getElementById('island-zoom-toast'));
 LMap(document.getElementById("map"));
