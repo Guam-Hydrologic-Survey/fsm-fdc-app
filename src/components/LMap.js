@@ -409,13 +409,19 @@ function kosraeMap(map, layerControl) {
 
 function getGages(map, layerControl, path) {
     // const path = './src/data/pohnpei/USGS_GAGES.json';
+
     fetch(path)
     .then(response => response.json())
     .then(gages => {
 
         const getInfo = (feature, layer) => {
             layer.bindTooltip('USGS Stream Gage', { permanent: true, direction: 'bottom', offset: [0, 10], className: 'usgs-stream-gage-tooltip' });
-            layer.bindPopup(`<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.gage_name.charAt(0).toUpperCase()}${feature.properties.gage_name.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.gage_num}</span>`);
+
+            if (path.toLowerCase().includes('pohnpei')) { // case for Pohnpei
+                layer.bindPopup(`<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.gage_name.charAt(0).toUpperCase()}${feature.properties.gage_name.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.gage_num}</span>`);
+            } else { // case for Kosrae
+                layer.bindPopup(`<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.GAGE.charAt(0).toUpperCase()}${feature.properties.GAGE.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.GAGE_NUM}</span>`);
+            }
         }
 
         const data = L.geoJSON(gages, {
@@ -463,10 +469,18 @@ function getStreams(map, layerControl, path) {
     .then(streams => {
 
         const getInfo = (feature, layer) => {
+
+            let streamName = ""
+            if (path.toLowerCase().includes('pohnpei')) { // case for Pohnpei
+                streamName = feature.properties.ARCID;
+            } else { // case for Kosrae
+                streamName = feature.properties.ID;
+            }
+
             layer.bindPopup(`
             <div class="card text-center">
                 <div class="card-header">
-                    <h5>Stream ID: ${feature.properties.ARCID}</h5>
+                    <h5>Stream ID: ${streamName}</h5>
                 </div>
                 <div class="card-body">
                     <p>${[0, 10, 30, 50, 80, 95, 'AVG'].map(ep => `Q${ep}: ${feature.properties[`Q${ep}`]}<br>`).join('')}</p>
