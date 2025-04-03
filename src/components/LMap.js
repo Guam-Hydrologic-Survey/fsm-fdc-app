@@ -16,6 +16,7 @@ import { SelectionView, choices, choicesLayers, createCheckBox } from "./Selecti
 // utils 
 import { geoJsonUrl, kosraeData, pohnpeiData } from "../utils/dataSource.js";
 import { createChoice } from "../utils/createChoice.js";
+import { Toast } from "./Toast_v2.js";
 
 let geoJsonData;
 
@@ -130,6 +131,7 @@ export function LMap(element) {
             if (map.hasLayer(kosrae)) { 
                 map.removeLayer(kosrae);
             } 
+            Toast('Kosrae');
             kosraeMap(map, layerControl);
         }, "Fly to Kosrae");
 
@@ -141,6 +143,7 @@ export function LMap(element) {
             if (map.hasLayer(pohnpei)) { 
                 map.removeLayer(pohnpei);
             } 
+            Toast('Pohnpei');
             pohnpeiMap(map, layerControl);
         }, "Fly to Pohnpei");
 
