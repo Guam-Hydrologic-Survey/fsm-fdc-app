@@ -417,11 +417,15 @@ function getGages(map, layerControl, path) {
         const getInfo = (feature, layer) => {
             layer.bindTooltip('USGS Stream Gage', { permanent: true, direction: 'bottom', offset: [0, 10], className: 'usgs-stream-gage-tooltip' });
 
+            let info = '';
+
             if (path.toLowerCase().includes('pohnpei')) { // case for Pohnpei
-                layer.bindPopup(`<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.gage_name.charAt(0).toUpperCase()}${feature.properties.gage_name.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.gage_num}</span>`);
+                info = `<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.gage_name.charAt(0).toUpperCase()}${feature.properties.gage_name.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.gage_num}</span>`;
             } else { // case for Kosrae
-                layer.bindPopup(`<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.GAGE.charAt(0).toUpperCase()}${feature.properties.GAGE.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.GAGE_NUM}</span>`);
+                info = `<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.GAGE.charAt(0).toUpperCase()}${feature.properties.GAGE.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.GAGE_NUM}</span>`;
             }
+            
+            layer.bindPopup(info);
         }
 
         const data = L.geoJSON(gages, {
