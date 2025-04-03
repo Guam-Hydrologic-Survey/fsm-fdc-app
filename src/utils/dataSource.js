@@ -16,8 +16,8 @@ const kosraeData = {
 
 const pohnpeiData = {
     roads: base + '/pohnpei/POHNPEI_RDS_UTM.json',
-    streams: base + '/pohnpei/STREAMS.json',
-    gages: base + '/pohnpei/USGS_GAGES.json',
+    streams: base + '/pohnpei/POHNPEI STREAMS.json',
+    gages: base + '/pohnpei/POHNPEI USGS_GAGES.json',
 }
 
 export { geoJsonUrl, kosraeData, pohnpeiData }
