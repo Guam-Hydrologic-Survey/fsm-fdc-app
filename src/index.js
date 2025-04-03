@@ -9,7 +9,6 @@ import { FullscreenModal } from "./components/FullscreenModal.js";
 import { NavBar } from "./components/NavBar.js";
 import { Legend } from "./components/Legend.js";
 import { LMap } from "./components/LMap.js";
-// import { LargePlotModal } from "./components/Plot.js";
 import { Modal } from "./components/Modal.js";
 import { Toast } from "./components/Toast_v2.js";
 
@@ -31,7 +30,5 @@ NavBar(document.getElementById("nav-bar"));
 About(document.getElementById("info"));
 FullscreenModal(document.getElementById("multiple-plots"));
 Legend(document.getElementById("legend"));
-// LargePlotModal(document.getElementById("large-plot"));
 Modal(document.getElementById('plot-modal'));
-// Toast(document.getElementById('island-zoom-toast'));
 LMap(document.getElementById("map"));
