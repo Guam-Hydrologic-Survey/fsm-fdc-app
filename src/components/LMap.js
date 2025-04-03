@@ -6,65 +6,11 @@ Return: none
 
 // components 
 import { BaseLayers } from "./Baselayers.js";
-import { SidePanel } from "./SidePanel.js";
-import { MarkerPopup } from "./MarkerPopup.js";
-import { MultiplePlots } from "./Plot.js";
 import { Plot } from "./Plot_v2.js";
-import { completeSelection, additionalSelection, alreadySelected } from "./Toast.js";
-import { SelectionView, choices, choicesLayers, createCheckBox } from "./SelectionView.js";
 
 // utils 
-import { geoJsonUrl, kosraeData, pohnpeiData } from "../utils/dataSource.js";
-import { createChoice } from "../utils/createChoice.js";
+import { kosraeData, pohnpeiData } from "../utils/dataSource.js";
 import { Toast } from "./Toast_v2.js";
-
-let geoJsonData;
-
-let selectionMode = "";
-
-const lassoControl = L.control.lasso({ position: "bottomright" });
-
-let pointSelectBtnState = false;
-let pointSelectLayers = [];
-
-const pointSelectBtn = L.easyButton({
-    states: [
-        {
-            stateName: 'detrigger-pointSelectBtn',
-            icon: '<img src="./src/assets/hand-index-thumb.svg">',
-            title: 'Select points to plot on click',
-            onClick: function(btn, map) {
-                console.log("Turned on point selection through click");
-                btn.state('trigger-pointSelectBtn');
-                pointSelectBtnState = true;
-                console.log(pointSelectBtnState);
-                map.on("click", function(point) {
-                    console.log(point.latlng);
-                    // console.log(point.target.feature.properties.name);
-                    console.log("Selected a point.")
-                });
-                selectionMode = "click";
-                // additionalSelection(document.getElementById("notif"));
-                SelectionView();
-            }
-        },
-        {
-            stateName: 'trigger-pointSelectBtn',
-            icon: '<img src="./src/assets/hand-index-thumb-fill.svg">',
-            title: "Turn off click-on-point selection",
-            onClick: function(btn) {
-                console.log("Turned off point selection through click");
-                btn.state('detrigger-pointSelectBtn');
-                pointSelectBtnState = false;
-                pointSelectLayers = [];
-                // choicesLayers = [];
-                const selectionView = document.getElementById("selection-view-offcanvas");
-                const selectionViewOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(selectionView);
-                selectionViewOffcanvas.hide();
-            }
-        }
-    ]
-});
 
 export function LMap(element) {
 
@@ -83,14 +29,6 @@ export function LMap(element) {
         Kosrae: { coords: [5.311475417249048, 162.97453880310061], zoom: 13 },
         Pohnpei: { coords: [6.903591547547428, 158.21943283081058], zoom: 12 },
     };
-
-    // const kosrae = L.marker(FSM.Kosrae.coords).addTo(map).bindPopup('<b>Kosrae, FSM</b>');
-    // const pohnpei = L.marker(FSM.Pohnpei.coords).addTo(map).bindPopup('<b>Pohnpei, FSM</b>');
-
-    const kosrae = L.marker(FSM.Kosrae.coords);
-    kosrae.addTo(map).bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' });
-    const pohnpei = L.marker(FSM.Pohnpei.coords);
-    pohnpei.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
 
     const baseLayers = BaseLayers(map, maxZoom);
 
@@ -113,6 +51,19 @@ export function LMap(element) {
     });
     zoomControl.addTo(map);
 
+    // const kosrae = L.marker(FSM.Kosrae.coords).addTo(map).bindPopup('<b>Kosrae, FSM</b>');
+    // const pohnpei = L.marker(FSM.Pohnpei.coords).addTo(map).bindPopup('<b>Pohnpei, FSM</b>');
+
+    const kosrae = L.marker(FSM.Kosrae.coords);
+    kosrae.addTo(map)
+    .bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' })
+    .on('click', () => { kosraeView(map, FSM, kosrae, layerControl) });
+
+    const pohnpei = L.marker(FSM.Pohnpei.coords);
+    pohnpei.addTo(map)
+    .bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' })
+    .on('click', () => { pohnpeiView(map, FSM, pohnpei, layerControl) });
+
     const resetZoomBtn = L.easyButton('<img src="./src/assets/geo-fill.svg">', function() {
         map.setView(center, defaultZoom);
         // map.flyTo(center, defaultZoom);
@@ -126,25 +77,27 @@ export function LMap(element) {
 
     const kosraeViewBtn = L.easyButton('<span class="easy-button-text">K</span>', 
         function() {
-            map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
-            // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
-            if (map.hasLayer(kosrae)) { 
-                map.removeLayer(kosrae);
-            } 
-            Toast('Kosrae');
-            kosraeMap(map, layerControl);
+            // map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
+            // // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
+            // if (map.hasLayer(kosrae)) { 
+            //     map.removeLayer(kosrae);
+            // } 
+            // Toast('Kosrae');
+            // kosraeMap(map, layerControl);
+            kosraeView(map, FSM, kosrae, layerControl);
         }, "Fly to Kosrae");
 
     const pohnpeiViewBtn = L.easyButton('<span class="easy-button-text">P</span>', 
         function() {
             // map.setView(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
             // map.panTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom)
-            map.flyTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
-            if (map.hasLayer(pohnpei)) { 
-                map.removeLayer(pohnpei);
-            } 
-            Toast('Pohnpei');
-            pohnpeiMap(map, layerControl);
+            // map.flyTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
+            // if (map.hasLayer(pohnpei)) { 
+            //     map.removeLayer(pohnpei);
+            // } 
+            // Toast('Pohnpei');
+            // pohnpeiMap(map, layerControl);
+            pohnpeiView(map, FSM, pohnpei, layerControl);
         }, "Fly to Pohnpei");
 
     const controlBar = L.easyBar([
@@ -225,16 +178,6 @@ export function LMap(element) {
         layerControl.addOverlay(drawnFeatures, "Drawings");
     } 
 
-    // console.log(pointSelectBtn.options.states);
-
-    const pointSelectionControls = L.easyBar([
-        pointSelectBtn,
-    ], { position: "bottomright" });
-
-    pointSelectionControls.addTo(map);
-    
-    lassoControl.addTo(map); 
-
     // hides tooltip based on zoom level 
     map.on('zoomend', function(z) {
         var zoomLevel = map.getZoom();
@@ -248,150 +191,25 @@ export function LMap(element) {
             });
         }
     });
-
-    // array holding well with status for use on point selection through click 
-    // let choices = [];
-    
-    // get data 
-    fetch(geoJsonUrl)
-        .then(response => response.json())
-        .then(geojson => {
-            let popup = L.popup()
-            const getValues = (feature, layer) => {
-                // popup with basic well info and buttons for stats and plot
-                layer.bindPopup(MarkerPopup(feature.properties.name, feature.properties.basin, feature.properties.lat, feature.properties.lon, feature.properties.desc)); 
-
-                // label for well name
-                layer.bindTooltip(feature.properties.name, {permanent: true, direction: 'bottom', offset: [0,10]});
-
-                // check if point selection button has been triggered 
-                layer.on("click", point => { 
-                    map.closePopup(); 
-                    // prevents popup from opening since side panel automatically opens 
-                    if (!pointSelectBtnState) {
-                        // map.closePopup(); 
-                        SidePanel(point.target.feature.properties);
-                        pointSelectLayers = [];
-                        // choicesLayers = [];
-                        choicesLayers.length = 0;
-                       
-                    } else {
-                        console.log(point.target.feature.properties.name);
-
-                        // check if point was already clicked/selected 
-                        if (!pointSelectLayers.includes(point.target.feature.properties)) {
-                            pointSelectLayers.push(point.target.feature.properties);
-                            choicesLayers.push(point.target.feature.properties);
-                            createCheckBox(point.target.feature.properties.name);
-
-                            // create choice object and add to choices array 
-                            choices.push(createChoice(point.target.feature.properties.name, true));
-                            // console.log(choices);
-
-                        } else {
-                            alreadySelected(document.getElementById("notif"), point.target.feature.properties.name);
-                        }
-                    }
-                })
-            }
-            geoJsonData = L.geoJSON(geojson, { onEachFeature: (getValues) }).addTo(map);
-            layerControl.addOverlay(geoJsonData, "Layer Name");
-
-            // for search control 
-            let searchCoords = [];
-            let searchMarker = L.circle(searchCoords, {
-                color: "red",
-                fillColor: "",
-                fillOpacity: 0.5,
-                weight: 3,
-                radius: 300,
-            });
-
-            // search control 
-            const searchControl = new L.Control.Search({ 
-                container: "search-box",
-                layer: geoJsonData, 
-                initial: false,
-                collapsed: false,
-                propertyName: 'name', 
-                casesensitive: false, 
-                textPlaceholder: 'Search wells...', 
-                textErr: 'Sorry, could locate well. Please try again.', 
-                autoResize: true, 
-                moveToLocation: function(latlng, title, map) { 
-                    searchCoords = latlng;
-                    searchMarker = L.circle(searchCoords, {
-                        color: "red",
-                        fillColor: "",
-                        fillOpacity: 0.5,
-                        weight: 3,
-                        radius: 80,
-                        className: "search-pulse",
-                    });
-                    searchMarker.addTo(map);
-                    map.flyTo(latlng, 16); 
-                    setTimeout(() => {
-                        searchMarker.remove();
-                      }, 8000);
-                }, 
-                marker: false,
-            }); 
-
-            searchControl.on("search:locationfound", function(point) { 
-                // point.layer.openPopup(); 
-                SidePanel(point.layer.feature.properties);
-                document.getElementById("searchtext15").value = "";
-            }); 
-
-            // initialize search 
-            map.addControl(searchControl);
-        });
-    
-    // getGages(map, layerControl);
-    // getRoads(map, layerControl);
-    // getStreams(map, layerControl);
-
-    // leaflet lasso configuration 
-    map.on("lasso.finished", event => {
-        // error handing checks if there are layers within selection using array.length
-        if (event.layers.length != 0) {
-            completeSelection(document.getElementById("notif"), event.layers);
-            MultiplePlots(event.layers, document.getElementById("multi-plot-view-contents"), "lasso");
-            // console.log(event.layers);
-        } 
-
-        selectionMode = "lasso";
-    });
-
-    // functionality for #select-more-points btn in FullscreenModal.js 
-    let fullScreenModalMorePoints = document.getElementById("select-more-points");
-    fullScreenModalMorePoints.addEventListener("click", () => {
-        additionalSelection(document.getElementById("notif"));
-        if (lassoControl.enabled()) {
-            lassoControl.disable();
-        } else {
-            lassoControl.enable();
-        }
-    });
 }
 
-// other components have access to this export 
-// TODO - include point selection control as an export along with lassoControl to be triggered back on/off upon clicking "Select more points to plot" button in FullscreenModal.js 
-export { selectionMode, lassoControl, pointSelectBtn };
+function kosraeView(map, FSM, kosrae, layerControl) {
+    map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
+    // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
+    if (map.hasLayer(kosrae)) { 
+        map.removeLayer(kosrae);
+    } 
+    Toast('Kosrae');
+    kosraeMap(map, layerControl);
+}
 
-let selectionState;
-
-export function updateSelectionStates() {
-    selectionState = {
-        method: "",
-        state: false,
-    }
-
-    for (let input of document.querySelectorAll('input')) {
-        if (input.checked) {
-            switch (input.className) { }
-        }
-    }
+function pohnpeiView(map, FSM, pohnpei, layerControl) {
+    map.flyTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
+    if (map.hasLayer(pohnpei)) { 
+        map.removeLayer(pohnpei);
+    } 
+    Toast('Pohnpei');
+    pohnpeiMap(map, layerControl);
 }
 
 function pohnpeiMap(map, layerControl) { 
@@ -424,7 +242,7 @@ function getGages(map, layerControl, path) {
             } else { // case for Kosrae
                 info = `<span align="center" style="font-weight: bold;">Stream Gage: ${feature.properties.GAGE.charAt(0).toUpperCase()}${feature.properties.GAGE.slice(1).toLowerCase()}<br>Stream Gage #: ${feature.properties.GAGE_NUM}</span>`;
             }
-            
+
             layer.bindPopup(info);
         }
 

@@ -45,9 +45,6 @@ export function NavBar(element) {
         </ul>
       </div>
 
-      <!-- container for the Leaflet Control Search -->
-      <div class="input-group" id="search-box"></div>
-
     </div>
   `
 }
