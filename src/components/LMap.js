@@ -12,6 +12,11 @@ import { Plot } from "./Plot_v2.js";
 import { kosraeData, pohnpeiData } from "../utils/dataSource.js";
 import { Toast } from "./Toast_v2.js";
 
+// globals 
+let gagesLayer = null;
+let streamsLayer = null;
+let roadsLayer = null;
+
 export function LMap(element) {
 
     const center = [6.17332365401505, 160.19439697265625]; // 6.85, 158.25
@@ -51,27 +56,23 @@ export function LMap(element) {
     });
     zoomControl.addTo(map);
 
-    // const kosrae = L.marker(FSM.Kosrae.coords).addTo(map).bindPopup('<b>Kosrae, FSM</b>');
-    // const pohnpei = L.marker(FSM.Pohnpei.coords).addTo(map).bindPopup('<b>Pohnpei, FSM</b>');
-
     const kosraeMarker = L.marker(FSM.Kosrae.coords);
     kosraeMarker.addTo(map)
     .bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' })
     .on('click', () => { kosraeView(map, FSM, kosraeMarker, layerControl) });
 
     const pohnpeiMarker = L.marker(FSM.Pohnpei.coords);
-   pohnpeiMarker.addTo(map)
+    pohnpeiMarker.addTo(map)
     .bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' })
     .on('click', () => { pohnpeiView(map, FSM, pohnpeiMarker, layerControl) });
 
     const resetZoomBtn = L.easyButton('<img src="./src/assets/geo-fill.svg">', function() {
         map.setView(center, defaultZoom);
-        // map.flyTo(center, defaultZoom);
 
         kosraeMarker.addTo(map).bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' });
 
-        pohnpei.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
-        pohnpei.openTooltip();
+        pohnpeiMarker.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
+        pohnpeiMarker.openTooltip();
 
     }, "Reset map view");
 
@@ -180,7 +181,6 @@ export function LMap(element) {
 
 function kosraeView(map, FSM, kosraeMarker, layerControl) {
     map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
-    // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
     if (map.hasLayer(kosraeMarker)) { 
         map.removeLayer(kosraeMarker);
     } 
@@ -213,6 +213,11 @@ function kosraeMap(map, layerControl) {
 function getGages(map, layerControl, path) {
     // const path = './src/data/pohnpei/USGS_GAGES.json';
 
+    if (gagesLayer && map.hasLayer(gagesLayer)) {
+        map.removeLayer(gagesLayer);
+        layerControl.removeLayer(gagesLayer);
+    } 
+
     fetch(path)
     .then(response => response.json())
     .then(gages => {
@@ -231,7 +236,7 @@ function getGages(map, layerControl, path) {
             layer.bindPopup(info);
         }
 
-        const data = L.geoJSON(gages, {
+        gagesLayer = L.geoJSON(gages, {
             pointToLayer: function(feature, latlng) {
                 return L.circleMarker(latlng, {
                     radius: 8,
@@ -245,16 +250,22 @@ function getGages(map, layerControl, path) {
             onEachFeature: getInfo,
         }).addTo(map);
 
-        layerControl.addOverlay(data, "Gages");
+        layerControl.addOverlay(gagesLayer, "Gages");
     });
 }
 
 function getRoads(map, layerControl, path) {
     // const path = './src/data/pohnpei/POHNPEI_RDS_UTM.json';
+
+    if (roadsLayer && map.hasLayer(roadsLayer)) {
+        map.removeLayer(roadsLayer);
+        layerControl.removeLayer(roadsLayer);
+    } 
+
     fetch(path)
     .then(response => response.json())
     .then(roads => {
-        const data = L.geoJSON(roads, {
+        roadsLayer = L.geoJSON(roads, {
             style: function(feature) {
                 return {
                     color: "#ff5733", // Line color
@@ -265,12 +276,18 @@ function getRoads(map, layerControl, path) {
             }
         }).addTo(map);
 
-        layerControl.addOverlay(data, "Roads");
+        layerControl.addOverlay(roadsLayer, "Roads");
     });
 }
 
 function getStreams(map, layerControl, path) {
     // const path = './src/data/pohnpei/STREAMS.json';
+
+    if (streamsLayer && map.hasLayer(streamsLayer)) {
+        map.removeLayer(streamsLayer);
+        layerControl.removeLayer(streamsLayer);
+    } 
+
     fetch(path)
     .then(response => response.json())
     .then(streams => {
@@ -306,8 +323,8 @@ function getStreams(map, layerControl, path) {
             });
         }
 
-        streams = L.geoJSON(streams, { onEachFeature: getInfo }).addTo(map);
-        layerControl.addOverlay(streams, "Streams");
+        streamsLayer = L.geoJSON(streams, { onEachFeature: getInfo }).addTo(map);
+        layerControl.addOverlay(streamsLayer, "Streams");
     });
 }
 
