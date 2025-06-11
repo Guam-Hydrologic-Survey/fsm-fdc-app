@@ -54,21 +54,21 @@ export function LMap(element) {
     // const kosrae = L.marker(FSM.Kosrae.coords).addTo(map).bindPopup('<b>Kosrae, FSM</b>');
     // const pohnpei = L.marker(FSM.Pohnpei.coords).addTo(map).bindPopup('<b>Pohnpei, FSM</b>');
 
-    const kosrae = L.marker(FSM.Kosrae.coords);
-    kosrae.addTo(map)
+    const kosraeMarker = L.marker(FSM.Kosrae.coords);
+    kosraeMarker.addTo(map)
     .bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' })
-    .on('click', () => { kosraeView(map, FSM, kosrae, layerControl) });
+    .on('click', () => { kosraeView(map, FSM, kosraeMarker, layerControl) });
 
-    const pohnpei = L.marker(FSM.Pohnpei.coords);
-    pohnpei.addTo(map)
+    const pohnpeiMarker = L.marker(FSM.Pohnpei.coords);
+   pohnpeiMarker.addTo(map)
     .bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' })
-    .on('click', () => { pohnpeiView(map, FSM, pohnpei, layerControl) });
+    .on('click', () => { pohnpeiView(map, FSM, pohnpeiMarker, layerControl) });
 
     const resetZoomBtn = L.easyButton('<img src="./src/assets/geo-fill.svg">', function() {
         map.setView(center, defaultZoom);
         // map.flyTo(center, defaultZoom);
 
-        kosrae.addTo(map).bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' });
+        kosraeMarker.addTo(map).bindTooltip('Kosrae, FSM', { permanent: true, direction: 'bottom', offset: [-20, 40], className: 'fsm-island-tooltip' });
 
         pohnpei.addTo(map).bindTooltip('Pohnpei, FSM', { permanent: true, direction: 'bottom', offset: [-15, 50], className: 'fsm-island-tooltip' });
         pohnpei.openTooltip();
@@ -77,27 +77,12 @@ export function LMap(element) {
 
     const kosraeViewBtn = L.easyButton('<span class="easy-button-text">K</span>', 
         function() {
-            // map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
-            // // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
-            // if (map.hasLayer(kosrae)) { 
-            //     map.removeLayer(kosrae);
-            // } 
-            // Toast('Kosrae');
-            // kosraeMap(map, layerControl);
-            kosraeView(map, FSM, kosrae, layerControl);
+            kosraeView(map, FSM, kosraeMarker, layerControl);
         }, "Fly to Kosrae");
 
     const pohnpeiViewBtn = L.easyButton('<span class="easy-button-text">P</span>', 
         function() {
-            // map.setView(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
-            // map.panTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom)
-            // map.flyTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
-            // if (map.hasLayer(pohnpei)) { 
-            //     map.removeLayer(pohnpei);
-            // } 
-            // Toast('Pohnpei');
-            // pohnpeiMap(map, layerControl);
-            pohnpeiView(map, FSM, pohnpei, layerControl);
+            pohnpeiView(map, FSM, pohnpeiMarker, layerControl);
         }, "Fly to Pohnpei");
 
     const controlBar = L.easyBar([
@@ -193,20 +178,20 @@ export function LMap(element) {
     });
 }
 
-function kosraeView(map, FSM, kosrae, layerControl) {
+function kosraeView(map, FSM, kosraeMarker, layerControl) {
     map.flyTo(FSM.Kosrae.coords, FSM.Kosrae.zoom);
     // map.setView(FSM.Kosrae.coords, FSM.Kosrae.zoom);
-    if (map.hasLayer(kosrae)) { 
-        map.removeLayer(kosrae);
+    if (map.hasLayer(kosraeMarker)) { 
+        map.removeLayer(kosraeMarker);
     } 
     Toast('Kosrae');
     kosraeMap(map, layerControl);
 }
 
-function pohnpeiView(map, FSM, pohnpei, layerControl) {
+function pohnpeiView(map, FSM, pohnpeiMarker, layerControl) {
     map.flyTo(FSM.Pohnpei.coords, FSM.Pohnpei.zoom);
-    if (map.hasLayer(pohnpei)) { 
-        map.removeLayer(pohnpei);
+    if (map.hasLayer(pohnpeiMarker)) { 
+        map.removeLayer(pohnpeiMarker);
     } 
     Toast('Pohnpei');
     pohnpeiMap(map, layerControl);
