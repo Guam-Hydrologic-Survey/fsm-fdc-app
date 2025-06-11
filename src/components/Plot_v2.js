@@ -2,7 +2,7 @@
 Plot_v2.js 
 */
 
-export function Plot(data) {
+export function Plot(island, data) {
     console.log(data);
 
     const eps = [0, 10, 30, 50, 80, 95];
@@ -11,7 +11,7 @@ export function Plot(data) {
         x: eps,
         y:eps.map(ep => data[`Q${ep}`]),
         type: 'scatter',
-        name: 'Streamflow Duration Curve',
+        name: `${island} Streamflow Duration Curve`,
     };
 
     // handle different property names for IDs
@@ -23,7 +23,7 @@ export function Plot(data) {
 
     const layout = {
         title: {
-            text: `Stream ID: ${streamId}`,
+            text: `${island} Stream ID: ${streamId}`,
             font: {
                 size: 20,
             }

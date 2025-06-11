@@ -6,6 +6,7 @@ Return: none
 
 // components 
 import { BaseLayers } from "./Baselayers.js";
+import { Table } from "./Table.js";
 import { Plot } from "./Plot_v2.js";
 
 // utils 
@@ -294,17 +295,21 @@ function getStreams(map, layerControl, path) {
 
         const getInfo = (feature, layer) => {
 
+            let island = "";
+
             let streamName = ""
             if (path.toLowerCase().includes('pohnpei')) { // case for Pohnpei
+                island = "Pohnpei";
                 streamName = feature.properties.ARCID;
             } else { // case for Kosrae
+                island = "Kosrae";
                 streamName = feature.properties.ID;
             }
 
             layer.bindPopup(`
             <div class="card text-center">
                 <div class="card-header">
-                    <h5>Stream ID: ${streamName}</h5>
+                    <h5>${island} Stream ID: ${streamName}</h5>
                 </div>
                 <div class="card-body">
                     <p>${[0, 10, 30, 50, 80, 95, 'AVG'].map(ep => `Q${ep}: ${feature.properties[`Q${ep}`]}<br>`).join('')}</p>
@@ -318,7 +323,11 @@ function getStreams(map, layerControl, path) {
             layer.on({
                 mouseover: highlightFeature,
                 mouseout: resetHighlight,
-                click: a => Plot(a.target.feature.properties)
+                // click: a => Plot(island, a.target.feature.properties)
+                click: a => {
+                    Plot(island, a.target.feature.properties);
+                    Table(a.target.feature.properties);
+                }
                 // click: a => plotData = a.target.feature.properties, // TODO - add click functionality to view popup on click and set plot 
             });
         }
