@@ -5,7 +5,6 @@ Description: Entry point for project. Appends all components to #app in index.ht
 
 // components 
 import { About } from "./components/About.js";
-import { FullscreenModal } from "./components/FullscreenModal.js";
 import { NavBar } from "./components/NavBar.js";
 import { LMap } from "./components/LMap.js";
 import { Modal } from "./components/Modal.js";
@@ -25,6 +24,5 @@ document.getElementById("app").innerHTML = /*html*/
 
 NavBar(document.getElementById("nav-bar"));
 About(document.getElementById("info"));
-FullscreenModal(document.getElementById("multiple-plots"));
 Modal(document.getElementById('plot-modal'));
 LMap(document.getElementById("map"));

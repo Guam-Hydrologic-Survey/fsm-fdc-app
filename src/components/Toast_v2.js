@@ -23,4 +23,3 @@ export function Toast(island) {
     const toastNotif = bootstrap.Toast.getOrCreateInstance(toast);
     toastNotif.show();
 }
-
