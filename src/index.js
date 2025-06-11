@@ -7,10 +7,8 @@ Description: Entry point for project. Appends all components to #app in index.ht
 import { About } from "./components/About.js";
 import { FullscreenModal } from "./components/FullscreenModal.js";
 import { NavBar } from "./components/NavBar.js";
-import { Legend } from "./components/Legend.js";
 import { LMap } from "./components/LMap.js";
 import { Modal } from "./components/Modal.js";
-import { Toast } from "./components/Toast_v2.js";
 
 document.getElementById("app").innerHTML = /*html*/ 
 `
@@ -20,7 +18,6 @@ document.getElementById("app").innerHTML = /*html*/
     <div id="notif"></div>
     <div id="multiple-plots"></div>
     <div id="side-panel"></div>
-    <div id="legend"></div>
     <div id="plot-modal"></div>
     <div id="island-zoom-toast"></div>
     <div id="selection-view"></div>
@@ -29,6 +26,5 @@ document.getElementById("app").innerHTML = /*html*/
 NavBar(document.getElementById("nav-bar"));
 About(document.getElementById("info"));
 FullscreenModal(document.getElementById("multiple-plots"));
-Legend(document.getElementById("legend"));
 Modal(document.getElementById('plot-modal'));
 LMap(document.getElementById("map"));
