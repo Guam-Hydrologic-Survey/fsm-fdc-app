@@ -3,7 +3,7 @@ Plot_v2.js
 */
 
 export function Plot(island, data) {
-    console.log(data);
+    // console.log(data);
 
     const eps = [0, 10, 30, 50, 80, 95];
 

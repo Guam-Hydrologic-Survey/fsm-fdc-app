@@ -98,13 +98,13 @@ export function LMap(element) {
     map.on('moveend', () => {
         let view = map.getCenter();
         let currentZoom = map.getZoom();
-        console.log(`Center = [${view.lat}, ${view.lng}]    |    Zoom Level = ${currentZoom}`);
+        // console.log(`Center = [${view.lat}, ${view.lng}]    |    Zoom Level = ${currentZoom}`);
     });
 
     map.on('zoomend', () => {
         let view = map.getCenter();
         let currentZoom = map.getZoom();
-        console.log(`Center = [${view.lat}, ${view.lng}]    |    Zoom Level = ${currentZoom}`);
+        // console.log(`Center = [${view.lat}, ${view.lng}]    |    Zoom Level = ${currentZoom}`);
     })
 
     // draw control bar
