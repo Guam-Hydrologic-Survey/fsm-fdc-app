@@ -21,9 +21,17 @@ export function About(element) {
             <br>-->
             <span class="weri-tr-title" id="weri-tr-text">MAppFx: Pohnpei and Kosrae, FSM - Streamflow Duration Curves</span>
             <br><br>
-            <!--
-            <p id="abstract">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. A cras semper auctor neque vitae. Sit amet mauris commodo quis imperdiet. Aenean pharetra magna ac placerat vestibulum lectus mauris ultrices eros. Turpis tincidunt id aliquet risus feugiat in. Nibh sit amet commodo nulla facilisi nullam vehicula. Diam maecenas sed enim ut sem viverra. Hendrerit gravida rutrum quisque non tellus orci ac auctor augue. Facilisis magna etiam tempor orci eu. Aliquet porttitor lacus luctus accumsan tortor posuere. Risus in hendrerit gravida rutrum quisque. Pretium fusce id velit ut. Sed turpis tincidunt id aliquet risus feugiat in ante metus. Nam libero justo laoreet sit. Nam at lectus urna duis convallis convallis. Eu lobortis elementum nibh tellus molestie nunc non blandit. Tristique senectus et netus et malesuada fames ac turpis. Quam pellentesque nec nam aliquam sem et.</p>
-            -->
+            <p id="abstract">
+            Reliable and affordable energy is critical for economic development and quality of life, especially in developing regions like Kosrae and Pohnpei in the Federated States of Micronesia (FSM). Both islands rely almost entirely on imported fossil fuels for electricity—an expensive, non-renewable, and environmentally harmful energy source. As fuel prices rise, there is growing interest in alternative energy solutions. Given the islands’ steep terrain and abundant surface water, run-of-river hydropower presents a promising, low-impact, and cost-effective alternative.
+            <br><br>
+            Run-of-river hydropower requires accurate information about streamflow variability to assess feasibility. However, FSM’s stream gaging network has been inactive for decades, leaving most potential hydropower sites without direct flow measurements. To address this, the project developed a method to estimate flow duration curves at ungaged sites on both Kosrae and Pohnpei.
+            <br><br>
+            Major streams were divided into hydrologically similar reaches using detailed Geographic Information System (GIS) mapping data from the Water and Environmental Research Institute (WERI). Statistical and analytical techniques were applied to existing streamflow records and physical stream characteristics to estimate average flows for each reach.
+            <br><br>
+            The resulting data have been integrated into WERI’s MapPFX platform, a suite of interactive data visualization tools hosted on the Guam Hydrologic Survey website. These tools allow users to explore streamflow characteristics and identify potential hydropower sites using interactive maps and supporting datasets. MapPFX enhances accessibility for local planners and stakeholders, making hydrologic data both user-friendly and actionable for decision-making.
+            <br><br>
+            This integrated approach provides a practical foundation for advancing sustainable energy planning in Kosrae and Pohnpei by leveraging local water resources and modern geospatial tools to support hydropower development and energy independence.
+            </p>
             <p class="people">
               <span>Authors & Developers</span>
               <br>
@@ -32,7 +40,18 @@ export function About(element) {
           </div>
 
           <div class="modal-footer about-btns">
-            <a class="btn btn-primary" href="#" title="Coming soon!" target="_blank" rel="noreferrer noopener" role="button">WERI Technical Report</a>
+            <div class="btn-group">
+              <button type="button" class="btn btn-primary" title="Coming soon!">WERI Technical Report</button>
+              <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" title="View associated technical reports">
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li class="dropdown-item">Associated Technical Reports</li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="https://weri-cdn.uog.edu/wp-content/PDFs/TRs/WERI%20TR%20129%20-%20Heitz%20et%20al%202010.pdf" target="_blank" rel="noreferrer noopener" title="Prediction of Flow Duration Curves for Use in Hydropower Analysis at Ungaged Sites in Pohnpei, FSM">WERI TR 129 (Heitz & Khosrowpanah, 2010)</a></li>
+                <li><a class="dropdown-item" href="https://weri-cdn.uog.edu/wp-content/PDFs/TRs/WERI%20TR%20137-%20Heitz%20et%20al%202012.pdf" target="_blank" rel="noreferrer noopener" title="Prediction of Flow Duration Curves for Use in Hydropower Analysis at Ungaged Sites in Kosrae, FSM">WERI TR 137 (Heitz & Khosrowpanah, 2012)</a></li>
+              </ul>
+            </div>
             <!-- Dropdown for links to GHS maps libraries -->
             <div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
