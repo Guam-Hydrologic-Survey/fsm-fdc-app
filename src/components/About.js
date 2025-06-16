@@ -28,7 +28,7 @@ export function About(element) {
             <br><br>
             Major streams were divided into hydrologically similar reaches using detailed Geographic Information System (GIS) mapping data from the Water and Environmental Research Institute (WERI). Statistical and analytical techniques were applied to existing streamflow records and physical stream characteristics to estimate average flows for each reach.
             <br><br>
-            The resulting data have been integrated into WERI’s MapPFX platform, a suite of interactive data visualization tools hosted on the Guam Hydrologic Survey website. These tools allow users to explore streamflow characteristics and identify potential hydropower sites using interactive maps and supporting datasets. MapPFX enhances accessibility for local planners and stakeholders, making hydrologic data both user-friendly and actionable for decision-making.
+            The resulting data have been integrated into WERI’s MAppFx platform, a suite of interactive data visualization tools hosted on the Guam Hydrologic Survey website. These tools allow users to explore streamflow characteristics and identify potential hydropower sites using interactive maps and supporting datasets. MAppFx enhances accessibility for local planners and stakeholders, making hydrologic data both user-friendly and actionable for decision-making.
             <br><br>
             This integrated approach provides a practical foundation for advancing sustainable energy planning in Kosrae and Pohnpei by leveraging local water resources and modern geospatial tools to support hydropower development and energy independence.
             </p>
