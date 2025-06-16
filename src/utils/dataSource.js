@@ -1,11 +1,8 @@
 /* 
 dataSource.js
-Description: 
-Return: 
+Description: Provides full paths for data files, typically JSON files. 
+Return: Returns a string containing the full path of a file. 
 */
-
-// update this with data set; must be full path, starting from the root directory 
-const geoJsonUrl = "./src/data/tests/dummy_data.json";
 
 const base = './src/data/';
 
@@ -20,4 +17,4 @@ const pohnpeiData = {
     gages: base + 'pohnpei/POHNPEI USGS_GAGES.json',
 }
 
-export { geoJsonUrl, kosraeData, pohnpeiData }
+export { kosraeData, pohnpeiData }
