@@ -8,10 +8,11 @@ Return: none
 import { BaseLayers } from "./Baselayers.js";
 import { Table } from "./Table.js";
 import { Plot } from "./Plot_v2.js";
+import { Toast } from "./Toast_v2.js";
+import { TitleCard } from "./TitleCard.js";
 
 // utils 
 import { kosraeData, pohnpeiData } from "../utils/dataSource.js";
-import { Toast } from "./Toast_v2.js";
 
 // globals 
 let gagesLayer = null;
@@ -41,15 +42,7 @@ export function LMap(element) {
     const layerControl = L.control.layers(baseLayers, null, { position: "bottomright" });
     layerControl.addTo(map);
 
-    const mapTitle = L.control({ position: 'topleft' });
-
-    mapTitle.onAdd = function(map) {
-        this._div = L.DomUtil.create('div', 'mapTitle'); 
-        this._div.innerHTML = '<img src="./src/assets/WERI MAppFx_Title Card_FSM FDC_v1.png" height="120">';
-        return this._div;
-    };
-
-    mapTitle.addTo(map);
+    TitleCard(map);
 
     const zoomControl = L.control.zoom({
         // options: topleft, topright, bottomleft, bottomright
